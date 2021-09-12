@@ -17,6 +17,17 @@ Flask-SQLAlchemy
 email-validator
 Flask-Moment
 Flask-Migrate
+alembic
+blinker
+dominate
+click
+Mako
+MarkupSafe
+python-dateutil
+python-editor
+six
+visitor
+WTForms
 
 # ISBN
 isbnlib

@@ -1,9 +1,11 @@
 from datetime import datetime
 from flask import render_template, session, redirect, url_for
 from . import main
-import forms
+
+# import forms
 from .. import db
-from ..models import User
+
+# from ..models import User
 
 
 @main.route("/")
