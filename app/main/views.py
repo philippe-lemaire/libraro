@@ -5,7 +5,7 @@ from . import main
 # import forms
 from .. import db
 
-# from ..models import User
+from ..models import User
 
 
 @main.route("/")
