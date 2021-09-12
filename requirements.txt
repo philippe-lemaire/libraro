@@ -15,7 +15,7 @@ bootstrap-flask
 Flask-WTF
 Flask-SQLAlchemy
 email-validator
-
+Flask-Moment
 
 # ISBN
 isbnlib
