@@ -11,8 +11,11 @@ pytest
 
 # Web Framework stuff
 flask
-flask-bootstrap
+bootstrap-flask
 Flask-WTF
+Flask-SQLAlchemy
+email-validator
+
 
 # ISBN
 isbnlib
