@@ -16,6 +16,7 @@ Flask-WTF
 Flask-SQLAlchemy
 email-validator
 Flask-Moment
+Flask-Migrate
 
 # ISBN
 isbnlib
