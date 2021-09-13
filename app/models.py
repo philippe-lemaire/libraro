@@ -40,3 +40,9 @@ class Book(db.Model):
     __tablename__ = "books"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    isbn13 = db.Column(db.String(64))
+    title = db.Column(db.String(128))
+    authors = db.Column(db.String(128))
+    publisher = db.Column(db.String(128))
+    year = db.Column(db.String(64))
+    language = db.Column(db.String(128))
