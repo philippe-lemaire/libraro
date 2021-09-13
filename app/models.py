@@ -47,3 +47,4 @@ class Book(db.Model):
     year = db.Column(db.String(64))
     language = db.Column(db.String(128), nullable=True)
     last_updated = db.Column(db.DateTime())
+    read = db.Column(db.Boolean())
