@@ -28,26 +28,30 @@ def add_a_book():
         service = config.get("SERVICE") or "goob"
         book_response = meta(isbn, service=service)
         book.isbn13 = book_response["ISBN-13"]
-        book.user_id = current_user.id
         book.title = book_response["Title"]
         book.authors = ", ".join(book_response["Authors"])
         book.year = book_response["Year"]
         book.last_updated = datetime.now()
+        print(book.last_updated)
         book.read = False
-        # fill in the book form
-        bookform.isbn13.data = book.isbn13
-        bookform.title.data = book.title
-        bookform.authors.data = book.authors
-        bookform.year.data = book.year
+
     if bookform.submit2.data and bookform.validate():
         book.title = bookform.title.data
         book.authors = bookform.authors.data
         book.year = bookform.year.data
         book.read = bookform.read.data
+        book.user_id = current_user.id
+        book.last_updated = datetime.now()
+        print(book.title)
         db.session.add(book)
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been added to your Libraro.")
         return redirect(url_for("main.index"))
+    # fill in the book form
+    bookform.isbn13.data = book.isbn13
+    bookform.title.data = book.title
+    bookform.authors.data = book.authors
+    bookform.year.data = book.year
     return render_template(
         "add_a_book.html", form=form, bookform=bookform, searched=searched, book=book
     )
@@ -67,6 +71,7 @@ def edit_book(id):
         book.authors = bookform.authors.data
         book.year = bookform.year.data
         book.read = bookform.read.data
+        book.last_updated = datetime.now()
         db.session.add(book)
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been updated in your Libraro.")
