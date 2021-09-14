@@ -1,11 +1,12 @@
 from datetime import datetime, date
 from operator import methodcaller
 from isbnlib import meta
-from flask import render_template, session, redirect, url_for, flash, request
+from flask import render_template, session, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
+from wtforms.fields.simple import SubmitField
 from . import main
 from app.models import User, Book
-from .forms import IsbnForm, BookForm
+from .forms import IsbnForm, BookForm, BookUpdateForm
 
 from .. import db
 from .. import config
@@ -59,3 +60,29 @@ def add_a_book():
 def my_books():
     books = Book.query.filter_by(user_id=current_user.id).all()
     return render_template("my_books.html", books=books)
+
+
+@main.route("/edit/book/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_book(id):
+    book = Book.query.get_or_404(id)
+    if current_user.id != book.user_id:
+        abort(403)
+    # create and fill the bookform with book data
+    bookform = BookUpdateForm()
+
+    if bookform.submit2.data and bookform.validate():
+        book.title = bookform.title.data
+        book.authors = bookform.authors.data
+        book.year = bookform.year.data
+        book.read = bookform.read.data
+        db.session.add(book)
+        db.session.commit()
+        flash(f"{book.title} by {book.authors} has been updated in your Libraro.")
+        return redirect(url_for("main.my_books"))
+
+    bookform.isbn13.data = book.isbn13
+    bookform.title.data = book.title
+    bookform.authors.data = book.authors
+    bookform.year.data = book.year
+    return render_template("edit_book.html", bookform=bookform, book=book)

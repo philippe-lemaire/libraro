@@ -22,4 +22,8 @@ class BookForm(FlaskForm):
     authors = StringField("Authors", validators=[DataRequired()])
     year = StringField("year", validators=[DataRequired()])
     read = BooleanField("read")
-    submit2 = SubmitField("Add this book.")
+    submit2 = SubmitField("Add this book")
+
+
+class BookUpdateForm(BookForm):
+    submit2 = SubmitField("Update this book")
