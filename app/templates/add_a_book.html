@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from 'bootstrap/form.html' import render_form %}
 
 {% block title %}
 Libraro | Add a book to your libraro
@@ -6,4 +7,13 @@ Libraro | Add a book to your libraro
 
 {% block content %}
 <h1>Add a book to your libraro</h1>
+
+{% if not searched %}
+{{ render_form(form) }}
+
+{% else %}
+
+{{ render_form(bookform) }}
+
+{% endif %}
 {% endblock %}
