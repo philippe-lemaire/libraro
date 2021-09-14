@@ -46,7 +46,7 @@ class Book(db.Model):
     title = db.Column(db.String(128))
     authors = db.Column(db.String(128))
     publisher = db.Column(db.String(128), nullable=True)
-    year = db.Column(db.String(64))
+    year = db.Column(db.Date())
     language = db.Column(db.String(128), nullable=True)
     last_updated = db.Column(db.DateTime())
     read = db.Column(db.Boolean())
