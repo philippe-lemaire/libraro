@@ -1,11 +1,9 @@
-from datetime import datetime, date
-from operator import methodcaller
+from datetime import datetime
 from isbnlib import meta
-from flask import render_template, session, redirect, url_for, flash, request, abort
+from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
-from wtforms.fields.simple import SubmitField
 from . import main
-from app.models import User, Book
+from app.models import Book
 from .forms import IsbnForm, BookForm, BookUpdateForm
 
 from .. import db
@@ -51,15 +49,8 @@ def add_a_book():
         flash(f"{book.title} by {book.authors} has been added to your Libraro.")
         return redirect(url_for("main.index"))
     return render_template(
-        "add_a_book.html", form=form, bookform=bookform, searched=searched
+        "add_a_book.html", form=form, bookform=bookform, searched=searched, book=book
     )
-
-
-@main.route("/my_books")
-@login_required
-def my_books():
-    books = Book.query.filter_by(user_id=current_user.id).all()
-    return render_template("my_books.html", books=books)
 
 
 @main.route("/edit/book/<int:id>", methods=["GET", "POST"])
@@ -86,3 +77,30 @@ def edit_book(id):
     bookform.authors.data = book.authors
     bookform.year.data = book.year
     return render_template("edit_book.html", bookform=bookform, book=book)
+
+
+@main.route("/my_books")
+@login_required
+def my_books():
+    books = Book.query.filter_by(user_id=current_user.id).all()
+    return render_template("my_books.html", books=books)
+
+
+@main.route("/my_books/<authors>")
+@login_required
+def my_books_by_author(authors):
+    books = (
+        Book.query.filter(Book.authors.like(authors))
+        .filter_by(user_id=current_user.id)
+        .all()
+    )
+    return render_template("my_books.html", books=books, authors=authors)
+
+
+@main.route("/my_authors")
+@login_required
+def my_authors():
+    books = Book.query.filter_by(user_id=current_user.id).all()
+    authors = [book.authors for book in books]
+    authors = list(set(authors))
+    return render_template("my_authors.html", authors=authors)

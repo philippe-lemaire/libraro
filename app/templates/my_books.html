@@ -5,22 +5,16 @@ Libraro | My Books
 {% endblock %}
 
 {% block content %}
-<h1>{{ current_user.username }}’s book collection</h1>
+<h1>{{ current_user.username }}’s book collection {% if authors %}by {{ authors }}{% endif %}</h1>
 
 <ul>
     {% for book in books %}
-    <li>{{book.title}} by {{book.authors}}. <a href="{{url_for('main.edit_book', id=book.id)}}">Edit this book</a></li>
+    <li>{{book.title}} by <a href="{{url_for('main.my_books_by_author', authors=book.authors)}}">{{book.authors}}</a>.
+        <a href="{{url_for('main.edit_book', id=book.id)}}">Edit this book</a>
+    </li>
     {% endfor %}
 </ul>
 
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<ul class=flashes>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
+
 
 {% endblock %}
