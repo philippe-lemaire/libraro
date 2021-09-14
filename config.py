@@ -8,6 +8,7 @@ class Config:
 
     LIBRARO_ADMIN = os.environ.get("LIBRARO_ADMIN")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SERVICE = "goob"
 
     @staticmethod
     def init_app(app):
