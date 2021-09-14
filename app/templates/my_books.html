@@ -9,7 +9,7 @@ Libraro | My Books
 
 <ul>
     {% for book in books %}
-    <li>{{book.title}} by {{book.authors}}. Book id: {{book.id}}</li>
+    <li>{{book.title}} by {{book.authors}}. <a href="{{url_for('main.edit_book', id=book.id)}}">Edit this book</a></li>
     {% endfor %}
 </ul>
 

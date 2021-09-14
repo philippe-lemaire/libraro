@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block title %}
+Libraro | Edit book
+{% endblock %}
+
+{% block content %}
+<h1>Edit book</h1>
+
+
+
+{{ render_form(bookform) }}
+
+
+{% endblock %}
