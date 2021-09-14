@@ -52,3 +52,10 @@ def add_a_book():
     return render_template(
         "add_a_book.html", form=form, bookform=bookform, searched=searched
     )
+
+
+@main.route("/my_books")
+@login_required
+def my_books():
+    books = Book.query.filter_by(user_id=current_user.id).all()
+    return render_template("my_books.html", books=books)
