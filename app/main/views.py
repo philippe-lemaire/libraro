@@ -1,11 +1,9 @@
-from datetime import datetime, date
-from operator import methodcaller
+from datetime import datetime
 from isbnlib import meta
-from flask import render_template, session, redirect, url_for, flash, request, abort
+from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
-from wtforms.fields.simple import SubmitField
 from . import main
-from app.models import User, Book
+from app.models import Book
 from .forms import IsbnForm, BookForm, BookUpdateForm
 
 from .. import db
@@ -30,36 +28,33 @@ def add_a_book():
         service = config.get("SERVICE") or "goob"
         book_response = meta(isbn, service=service)
         book.isbn13 = book_response["ISBN-13"]
-        book.user_id = current_user.id
         book.title = book_response["Title"]
         book.authors = ", ".join(book_response["Authors"])
         book.year = book_response["Year"]
         book.last_updated = datetime.now()
+        print(book.last_updated)
         book.read = False
-        # fill in the book form
-        bookform.isbn13.data = book.isbn13
-        bookform.title.data = book.title
-        bookform.authors.data = book.authors
-        bookform.year.data = book.year
+
     if bookform.submit2.data and bookform.validate():
         book.title = bookform.title.data
         book.authors = bookform.authors.data
         book.year = bookform.year.data
         book.read = bookform.read.data
+        book.user_id = current_user.id
+        book.last_updated = datetime.now()
+        print(book.title)
         db.session.add(book)
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been added to your Libraro.")
         return redirect(url_for("main.index"))
+    # fill in the book form
+    bookform.isbn13.data = book.isbn13
+    bookform.title.data = book.title
+    bookform.authors.data = book.authors
+    bookform.year.data = book.year
     return render_template(
-        "add_a_book.html", form=form, bookform=bookform, searched=searched
+        "add_a_book.html", form=form, bookform=bookform, searched=searched, book=book
     )
-
-
-@main.route("/my_books")
-@login_required
-def my_books():
-    books = Book.query.filter_by(user_id=current_user.id).all()
-    return render_template("my_books.html", books=books)
 
 
 @main.route("/edit/book/<int:id>", methods=["GET", "POST"])
@@ -76,6 +71,7 @@ def edit_book(id):
         book.authors = bookform.authors.data
         book.year = bookform.year.data
         book.read = bookform.read.data
+        book.last_updated = datetime.now()
         db.session.add(book)
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been updated in your Libraro.")
@@ -86,3 +82,30 @@ def edit_book(id):
     bookform.authors.data = book.authors
     bookform.year.data = book.year
     return render_template("edit_book.html", bookform=bookform, book=book)
+
+
+@main.route("/my_books")
+@login_required
+def my_books():
+    books = Book.query.filter_by(user_id=current_user.id).all()
+    return render_template("my_books.html", books=books)
+
+
+@main.route("/my_books/<authors>")
+@login_required
+def my_books_by_author(authors):
+    books = (
+        Book.query.filter(Book.authors.like(authors))
+        .filter_by(user_id=current_user.id)
+        .all()
+    )
+    return render_template("my_books.html", books=books, authors=authors)
+
+
+@main.route("/my_authors")
+@login_required
+def my_authors():
+    books = Book.query.filter_by(user_id=current_user.id).all()
+    authors = [book.authors for book in books]
+    authors = list(set(authors))
+    return render_template("my_authors.html", authors=authors)

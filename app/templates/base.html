@@ -39,7 +39,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="#">List books by authors</a>
-                            <a class="dropdown-item" href="#">List books by genre</a>
+                            <a class="dropdown-item" href="{{url_for('main.my_authors')}}">My authors</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">All books</a>
                         </div>
@@ -78,6 +78,15 @@
     <!-- Your page content -->
     <div class="container">
         <br><br>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
     </div>
     {% block scripts %}
