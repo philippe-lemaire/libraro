@@ -1,10 +1,11 @@
-import os, secrets
+import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY") or secrets.token_hex(16)
+    SECRET_KEY = os.environ.get("SECRET_KEY") or "87f58f77d705b5b044436bffe0cc4a9f"
+
     LIBRARO_ADMIN = os.environ.get("LIBRARO_ADMIN")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

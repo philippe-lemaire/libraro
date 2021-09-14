@@ -17,6 +17,7 @@ Flask-SQLAlchemy
 email-validator
 Flask-Moment
 Flask-Migrate
+flask-login
 alembic
 blinker
 dominate
