@@ -45,7 +45,6 @@ class Book(db.Model):
     isbn13 = db.Column(db.String(64))
     title = db.Column(db.String(128))
     authors = db.Column(db.String(128))
-    publisher = db.Column(db.String(128), nullable=True)
     year = db.Column(db.String(64))
     language = db.Column(db.String(128), nullable=True)
     last_updated = db.Column(db.DateTime())
