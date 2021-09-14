@@ -7,11 +7,9 @@ Libraro | login
 
 {% block content %}
 <h1>Login</h1>
-
+<h2>I already have an account</h2>
 {{ render_form(form) }}
-<p>New user?
-    <a href="{{url_for('auth.register')}}">Click here to register</a>
-</p>
+
 <br><br>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
@@ -21,5 +19,10 @@ Libraro | login
     {% endfor %}
 </ul>
 {% endif %}
+
+<h2>I am a new user</h2>
+<p>
+    <a href="{{url_for('auth.register')}}">Click here to register</a>
+</p>
 {% endwith %}
 {% endblock %}
