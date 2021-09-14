@@ -1,9 +1,11 @@
 {% extends "base.html" %}
+{% from 'bootstrap/form.html' import render_form %}
 
 {% block title %}
-Libraro | register an account
+Libraro | Register an account
 {% endblock %}
 
 {% block content %}
-<h1>this is the register page</h1>
+<h1>Register an account</h1>
+{{ render_form(form) }}
 {% endblock %}
