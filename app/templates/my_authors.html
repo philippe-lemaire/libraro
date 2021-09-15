@@ -9,7 +9,7 @@ Libraro | My Authors
 
 <ul>
     {% for author in authors %}
-    <li> <a href="{{url_for('main.my_books_by_author', authors=authors)}}">{{author}}</a>
+    <li> <a href="{{url_for('main.my_books_by_author', authors=author)}}">{{author}}</a>
     </li>
     {% endfor %}
 </ul>
