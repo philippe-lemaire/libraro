@@ -2,6 +2,7 @@ from datetime import datetime
 from isbnlib import meta
 from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
+from sqlalchemy import desc
 from . import main
 from app.models import Book
 from .forms import DeleteBookForm, IsbnForm, BookForm, BookUpdateForm
@@ -12,7 +13,17 @@ from .. import config
 
 @main.route("/")
 def index():
-    return render_template("index.html")
+
+    if current_user.is_authenticated:
+        books = (
+            Book.query.filter_by(user_id=current_user.id)
+            .order_by(desc(Book.last_updated))
+            .limit(5)
+            .all()
+        )
+    else:
+        books = []
+    return render_template("index.html", current_time=datetime.utcnow(), books=books)
 
 
 @main.route("/add_a_book", methods=["GET", "POST"])
@@ -42,7 +53,7 @@ def add_a_book():
         book.year = bookform.year.data
         book.read = bookform.read.data
         book.user_id = current_user.id
-        book.last_updated = datetime.now()
+        book.last_updated = datetime.utcnow()
         print(book.title)
         db.session.add(book)
         db.session.commit()
@@ -72,7 +83,7 @@ def edit_book(id):
         book.authors = bookform.authors.data
         book.year = bookform.year.data
         book.read = bookform.read.data
-        book.last_updated = datetime.now()
+        book.last_updated = datetime.utcnow()
         db.session.add(book)
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been updated in your Libraro.")
@@ -129,4 +140,9 @@ def my_authors():
     books = Book.query.filter_by(user_id=current_user.id).all()
     authors = [book.authors for book in books]
     authors = list(set(authors))
+    num_books_per_author = []
+    for author in authors:
+        books_by_author = [book for book in books if book.authors == author]
+        num_books_per_author.append(len(books_by_author))
+    authors = zip(authors, num_books_per_author)
     return render_template("my_authors.html", authors=authors)
