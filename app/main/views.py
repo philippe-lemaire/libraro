@@ -4,7 +4,7 @@ from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
 from . import main
 from app.models import Book
-from .forms import IsbnForm, BookForm, BookUpdateForm
+from .forms import DeleteBookForm, IsbnForm, BookForm, BookUpdateForm
 
 from .. import db
 from .. import config
@@ -37,6 +37,7 @@ def add_a_book():
 
     if bookform.submit2.data and bookform.validate():
         book.title = bookform.title.data
+        book.isbn13 = bookform.isbn13.data
         book.authors = bookform.authors.data
         book.year = bookform.year.data
         book.read = bookform.read.data
@@ -65,7 +66,7 @@ def edit_book(id):
         abort(403)
     # create and fill the bookform with book data
     bookform = BookUpdateForm()
-
+    deleteform = DeleteBookForm()
     if bookform.submit2.data and bookform.validate():
         book.title = bookform.title.data
         book.authors = bookform.authors.data
@@ -81,7 +82,27 @@ def edit_book(id):
     bookform.title.data = book.title
     bookform.authors.data = book.authors
     bookform.year.data = book.year
-    return render_template("edit_book.html", bookform=bookform, book=book)
+    bookform.read.data = book.read
+    if deleteform.validate_on_submit():
+        db.session.delete(book)
+        db.session.commit()
+        flash(f"{book.title} by {book.authors} has been removed from your Libraro.")
+        return redirect(url_for("main.my_books"))
+    return render_template(
+        "edit_book.html", bookform=bookform, deleteform=deleteform, book=book
+    )
+
+
+@main.route("/delete/book/<int:id>")
+@login_required
+def delete_book(id):
+    book = Book.query.get_or_404(id)
+    if current_user.id != book.user_id:
+        abort(403)
+    db.session.delete(book)
+    db.session.commit()
+    flash(f"{book.title} by {book.authors} has been removed from your Libraro.")
+    return redirect(url_for("main.my_books"))
 
 
 @main.route("/my_books")

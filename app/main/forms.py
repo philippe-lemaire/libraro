@@ -27,3 +27,7 @@ class BookForm(FlaskForm):
 
 class BookUpdateForm(BookForm):
     submit2 = SubmitField("Update this book")
+
+
+class DeleteBookForm(FlaskForm):
+    submit = SubmitField("Remove this book")
