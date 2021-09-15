@@ -10,7 +10,8 @@ Libraro | My Books
 <ul>
     {% for book in books %}
     <li>{{book.title}} by <a href="{{url_for('main.my_books_by_author', authors=book.authors)}}">{{book.authors}}</a>.
-        <a href="{{url_for('main.edit_book', id=book.id)}}">Edit this book</a>
+        <a href="{{url_for('main.edit_book', id=book.id)}}">Edit this book</a>.
+        <a class='danger' href="{{url_for('main.delete_book', id=book.id)}}">Remove this book</a>
     </li>
     {% endfor %}
 </ul>
