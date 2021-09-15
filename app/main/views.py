@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from sqlalchemy import desc
 from . import main
 from app.models import Book
-from .forms import DeleteBookForm, IsbnForm, BookForm, BookUpdateForm
+from .forms import DeleteBookForm, IsbnForm, BookForm, BookUpdateForm, ProfileForm
 
 from .. import db
 from .. import config
@@ -146,3 +146,23 @@ def my_authors():
         num_books_per_author.append(len(books_by_author))
     authors = zip(authors, num_books_per_author)
     return render_template("my_authors.html", authors=authors)
+
+
+@main.route("/my_profile", methods=["GET", "POST"])
+@login_required
+def my_profile():
+    profileform = ProfileForm()
+
+    if profileform.validate_on_submit():
+        # update the user and commit to db
+        current_user.username = profileform.username.data
+        current_user.email = profileform.email.data
+        flash("Profile updated")
+        db.session.add(current_user)
+        db.session.commit()
+        return redirect(url_for("main.index"))
+
+    # fill in the form before rendering
+    profileform.username.data = current_user.username
+    profileform.email.data = current_user.email
+    return render_template("my_profile.html", profileform=profileform)

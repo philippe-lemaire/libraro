@@ -31,3 +31,9 @@ class BookUpdateForm(BookForm):
 
 class DeleteBookForm(FlaskForm):
     submit = SubmitField("Remove this book")
+
+
+class ProfileForm(FlaskForm):
+    email = StringField("Email", validators=[DataRequired(), Length(1, 128), Email()])
+    username = StringField("Username", validators=[DataRequired()])
+    submit = SubmitField("Update profile")
