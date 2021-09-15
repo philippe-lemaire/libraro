@@ -12,6 +12,30 @@ Libraro | index
     Stranger
     {% endif %}!
 </h1>
+<br><br>
+{% if books %}
+<h2>Your 5 latest additions</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author(s)</th>
+            <th scope="col">Last updated</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ book.title}}</td>
+            <td>{{ book.authors }}</td>
+            <td>{{ moment(book.last_updated).fromNow(refresh=True) }}</td>
+        </tr>
+        {% endfor %}
 
+    </tbody>
+</table>
 
+{% endif %}
 {% endblock %}
