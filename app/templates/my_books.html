@@ -7,7 +7,7 @@ Libraro | My Books
 {% block content %}
 <h1>{{ current_user.username }}’s book collection {% if authors %}by {{ authors }}{% endif %}</h1>
 <br><br>
-<table class="table">
+<table class="table table-hover table-striped">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -38,4 +38,6 @@ Libraro | My Books
 
     </tbody>
 </table>
+<br>
+<a class="btn btn-primary" role="button" href="/add_a_book">Add a book</a>
 {% endblock %}

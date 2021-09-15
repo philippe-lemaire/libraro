@@ -15,7 +15,7 @@ Libraro | index
 <br><br>
 {% if books %}
 <h2>Your 5 latest additions</h2>
-<table class="table">
+<table class="table table-hover table-striped">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -46,6 +46,7 @@ Libraro | index
 
     </tbody>
 </table>
-
+<br>
+<a class="btn btn-primary" role="button" href="/add_a_book">Add a book</a>
 {% endif %}
 {% endblock %}
