@@ -21,7 +21,10 @@ Libraro | index
             <th scope="col">#</th>
             <th scope="col">Title</th>
             <th scope="col">Author(s)</th>
+            <th scope='col'>Read</th>
             <th scope="col">Last updated</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Remove</th>
         </tr>
     </thead>
     <tbody>
@@ -29,8 +32,15 @@ Libraro | index
         <tr>
             <th scope="row">{{ loop.index }}</th>
             <td>{{ book.title}}</td>
-            <td>{{ book.authors }}</td>
+            <td><a href="{{url_for('main.my_books_by_author', authors=book.authors)}}">{{book.authors}}</a></td>
+            {% if book.read %}
+            <td>💪</td>
+            {% else %}
+            <td>😣</td>
+            {% endif %}
             <td>{{ moment(book.last_updated).fromNow(refresh=True) }}</td>
+            <td><a href="{{url_for('main.edit_book', id=book.id)}}">Edit</a></td>
+            <td><a class='danger' href="{{url_for('main.delete_book', id=book.id)}}">Remove</a></td>
         </tr>
         {% endfor %}
 
