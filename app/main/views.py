@@ -140,4 +140,9 @@ def my_authors():
     books = Book.query.filter_by(user_id=current_user.id).all()
     authors = [book.authors for book in books]
     authors = list(set(authors))
+    num_books_per_author = []
+    for author in authors:
+        books_by_author = [book for book in books if book.authors == author]
+        num_books_per_author.append(len(books_by_author))
+    authors = zip(authors, num_books_per_author)
     return render_template("my_authors.html", authors=authors)
