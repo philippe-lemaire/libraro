@@ -90,6 +90,7 @@
         {% block content %}{% endblock %}
     </div>
     {% block scripts %}
+    {{ moment.include_moment() }}
     <!-- Optional JavaScript -->
     {{ bootstrap.load_js() }}
     {% endblock %}
