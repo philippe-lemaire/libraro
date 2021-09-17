@@ -56,8 +56,8 @@ class Book(db.Model):
     last_updated = db.Column(db.DateTime())
     read = db.Column(db.Boolean())
     to_trade = db.Column(db.Boolean())
-    user_review_stars = db.Column(db.Integer)
-    user_review_text = db.Column(db.String(256))
+    user_review_stars = db.Column(db.Integer, nullable=True)
+    user_review_text = db.Column(db.String(256), nullable=True)
 
 
 @login_manager.user_loader
