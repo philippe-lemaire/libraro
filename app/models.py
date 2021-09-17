@@ -22,6 +22,11 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey("roles.id"))
     password_hash = db.Column(db.String(128))
     books = db.relationship("Book", backref="user")
+    bio = db.Column(db.String(256))
+    street_address = db.Column(db.String(128))
+    zip_code = db.Column(db.Integer)
+    city = db.Column(db.String(128))
+    country = db.Column(db.String(64))
 
     @property
     def password(self):
@@ -45,10 +50,14 @@ class Book(db.Model):
     isbn13 = db.Column(db.String(64))
     title = db.Column(db.String(128))
     authors = db.Column(db.String(128))
+    publisher = db.Column(db.String(128))
     year = db.Column(db.String(64))
     language = db.Column(db.String(128), nullable=True)
     last_updated = db.Column(db.DateTime())
     read = db.Column(db.Boolean())
+    to_trade = db.Column(db.Boolean())
+    user_review_stars = db.Column(db.Integer, nullable=True)
+    user_review_text = db.Column(db.String(256), nullable=True)
 
 
 @login_manager.user_loader

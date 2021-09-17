@@ -14,6 +14,7 @@ Libraro | My Books
             <th scope="col">Title</th>
             <th scope="col">Author(s)</th>
             <th scope='col'>Read</th>
+            <th scope='col'>Review</th>
             <th scope="col">Last updated</th>
             <th scope="col">Edit</th>
             <th scope="col">Remove</th>
@@ -26,13 +27,18 @@ Libraro | My Books
             <td>{{ book.title}}</td>
             <td><a href="{{url_for('main.my_books_by_author', authors=book.authors)}}">{{book.authors}}</a></td>
             {% if book.read %}
-            <td>💪</td>
+            <td>✔</td>
             {% else %}
-            <td>😣</td>
+            <td></td>
+            {% endif %}
+            {% if book.user_review_stars %}
+            <td>{% for star in range(book.user_review_stars) %}⭐{% endfor %}</td><!--  The stars -->
+            {% else %}
+            <td>👎</td>
             {% endif %}
             <td>{{ moment(book.last_updated).fromNow(refresh=True) }}</td>
-            <td><a href="{{url_for('main.edit_book', id=book.id)}}">Edit</a></td>
-            <td><a class='danger' href="{{url_for('main.delete_book', id=book.id)}}">Remove</a></td>
+            <td><a href="{{url_for('main.edit_book', id=book.id)}}">📝</a></td>
+            <td><a class='danger' href="{{url_for('main.delete_book', id=book.id)}}">❌</a></td>
         </tr>
         {% endfor %}
 

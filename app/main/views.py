@@ -42,8 +42,6 @@ def add_a_book():
         book.title = book_response["Title"]
         book.authors = ", ".join(book_response["Authors"])
         book.year = book_response["Year"]
-        book.last_updated = datetime.now()
-        print(book.last_updated)
         book.read = False
 
     if bookform.submit2.data and bookform.validate():
@@ -54,7 +52,9 @@ def add_a_book():
         book.read = bookform.read.data
         book.user_id = current_user.id
         book.last_updated = datetime.utcnow()
-        print(book.title)
+        book.publisher = bookform.publisher.data
+        book.user_review_stars = bookform.user_review_stars.data
+        book.user_review_text = bookform.user_review_text.data
         db.session.add(book)
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been added to your Libraro.")
@@ -64,6 +64,9 @@ def add_a_book():
     bookform.title.data = book.title
     bookform.authors.data = book.authors
     bookform.year.data = book.year
+    bookform.publisher.data = book.publisher
+    bookform.user_review_stars.data = book.user_review_stars
+    bookform.user_review_text.data = book.user_review_text
     return render_template(
         "add_a_book.html", form=form, bookform=bookform, searched=searched, book=book
     )
@@ -84,7 +87,14 @@ def edit_book(id):
         book.year = bookform.year.data
         book.read = bookform.read.data
         book.last_updated = datetime.utcnow()
-        db.session.add(book)
+        book.publisher = bookform.publisher.data
+        book.user_review_stars = (
+            int(bookform.user_review_stars.data)
+            if bookform.user_review_stars.data
+            else ""
+        )
+        book.user_review_text = bookform.user_review_text.data
+        book.to_trade = bookform.to_trade.data
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been updated in your Libraro.")
         return redirect(url_for("main.my_books"))
@@ -94,7 +104,12 @@ def edit_book(id):
     bookform.authors.data = book.authors
     bookform.year.data = book.year
     bookform.read.data = book.read
-    if deleteform.validate_on_submit():
+    bookform.publisher.data = book.publisher
+    bookform.user_review_stars.data = str(book.user_review_stars)
+    bookform.user_review_text.data = book.user_review_text
+    bookform.to_trade.data = book.to_trade
+
+    if deleteform.submit.data and deleteform.validate():
         db.session.delete(book)
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been removed from your Libraro.")
@@ -157,12 +172,22 @@ def my_profile():
         # update the user and commit to db
         current_user.username = profileform.username.data
         current_user.email = profileform.email.data
+        current_user.bio = profileform.bio.data
+        current_user.street_address = profileform.street_address.data
+        current_user.zip_code = profileform.zip_code.data
+        current_user.city = profileform.city.data
+        current_user.country = profileform.country.data
+
         flash("Profile updated")
-        db.session.add(current_user)
         db.session.commit()
         return redirect(url_for("main.index"))
 
     # fill in the form before rendering
     profileform.username.data = current_user.username
     profileform.email.data = current_user.email
+    profileform.bio.data = current_user.bio
+    profileform.street_address.data = current_user.street_address
+    profileform.zip_code.data = current_user.zip_code
+    profileform.city.data = current_user.city
+    profileform.country.data = current_user.country
     return render_template("my_profile.html", profileform=profileform)
