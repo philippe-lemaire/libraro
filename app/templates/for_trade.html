@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+Libraro | Books for Trade
+{% endblock %}
+
+{% block content %}
+<h1>Libraro | Books for Trade</h1>
+<br><br>
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author(s)</th>
+            <th scope='col'>Last updated</th>
+            <th scope='col'>User</th>
+            <th scope='col'>City</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books_for_trade %}
+        <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ book[0].title}}</td>
+            <td>{{ book[0].authors }}</td>
+            <td>{{ moment(book[0].last_updated).fromNow(refresh=True) }}</td>
+            <td>{{ book.username }}</td>
+            <td>{{ book.city }}</td>
+
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+<br>
+
+{% endblock %}
