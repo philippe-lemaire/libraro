@@ -203,3 +203,21 @@ def for_trade():
         .all()
     )
     return render_template("for_trade.html", books_for_trade=books_for_trade)
+
+
+@main.route("/for_trade/<city>")
+def for_trade_by_city(city):
+    books_for_trade = (
+        Book.query.filter_by(to_trade=True)
+        .join(User)
+        .add_columns(User.username, User.city)
+        .filter_by(city=city)
+        .all()
+    )
+    return render_template("for_trade.html", books_for_trade=books_for_trade)
+
+
+@main.route("/user/<int:id>")
+def user_page(id):
+    user = User.query.get_or_404(id)
+    return render_template("user_page.html", user=user)
