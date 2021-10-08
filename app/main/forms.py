@@ -20,7 +20,7 @@ class IsbnForm(FlaskForm):
 
 
 class BookForm(FlaskForm):
-    isbn13 = StringField("ISBN13", render_kw={"readonly": True})
+    isbn13 = StringField("ISBN", render_kw={"readonly": True})
     title = StringField("Title", validators=[DataRequired()])
     authors = StringField("Authors", validators=[DataRequired()])
     publisher = StringField("Publisher", validators=[Length(max=128)])

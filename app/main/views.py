@@ -4,7 +4,7 @@ from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from . import main
-from app.models import Book
+from app.models import Book, User
 from .forms import DeleteBookForm, IsbnForm, BookForm, BookUpdateForm, ProfileForm
 
 from .. import db
@@ -55,6 +55,7 @@ def add_a_book():
         book.publisher = bookform.publisher.data
         book.user_review_stars = bookform.user_review_stars.data
         book.user_review_text = bookform.user_review_text.data
+        book.to_trade = bookform.to_trade.data
         db.session.add(book)
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been added to your Libraro.")
@@ -191,3 +192,14 @@ def my_profile():
     profileform.city.data = current_user.city
     profileform.country.data = current_user.country
     return render_template("my_profile.html", profileform=profileform)
+
+
+@main.route("/for_trade")
+def for_trade():
+    books_for_trade = (
+        Book.query.filter_by(to_trade=True)
+        .join(User)
+        .add_columns(User.username, User.city)
+        .all()
+    )
+    return render_template("for_trade.html", books_for_trade=books_for_trade)
