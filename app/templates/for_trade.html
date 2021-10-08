@@ -25,8 +25,8 @@ Libraro | Books for Trade
             <td>{{ book[0].title}}</td>
             <td>{{ book[0].authors }}</td>
             <td>{{ moment(book[0].last_updated).fromNow(refresh=True) }}</td>
-            <td>{{ book.username }}</td>
-            <td>{{ book.city }}</td>
+            <td><a href="{{url_for('main.user_page', id=book[0].user_id)}}">{{ book.username }}</a></td>
+            <td><a href="{{url_for('main.for_trade_by_city', city=book.city)}}">{{ book.city }}</a></td>
 
         </tr>
         {% endfor %}
