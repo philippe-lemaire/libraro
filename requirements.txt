@@ -29,6 +29,9 @@ python-editor
 six
 visitor
 WTForms
+python-dotenv
+gunicorn
 
 # ISBN
 isbnlib
+
