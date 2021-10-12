@@ -13,17 +13,7 @@ from .. import config
 
 @main.route("/")
 def index():
-
-    if current_user.is_authenticated:
-        books = (
-            Book.query.filter_by(user_id=current_user.id)
-            .order_by(desc(Book.last_updated))
-            .limit(5)
-            .all()
-        )
-    else:
-        books = []
-    return render_template("index.html", current_time=datetime.utcnow(), books=books)
+    return render_template("index.html")
 
 
 @main.route("/add_a_book", methods=["GET", "POST"])
@@ -59,7 +49,7 @@ def add_a_book():
         db.session.add(book)
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been added to your Libraro.")
-        return redirect(url_for("main.index"))
+        return redirect(url_for("main.add_a_book"))
     # fill in the book form
     bookform.isbn13.data = book.isbn13
     bookform.title.data = book.title

@@ -7,6 +7,16 @@ Libraro | Add a book to your libraro
 
 {% block content %}
 <h1>Add a book to your libraro</h1>
+<br>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{url_for('main.index')}}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add a book</li>
+    </ol>
+</nav>
+
+<br>
 
 {% if not searched %}
 {{ render_form(form) }}
