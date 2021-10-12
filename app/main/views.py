@@ -13,17 +13,7 @@ from .. import config
 
 @main.route("/")
 def index():
-
-    if current_user.is_authenticated:
-        books = (
-            Book.query.filter_by(user_id=current_user.id)
-            .order_by(desc(Book.last_updated))
-            .limit(5)
-            .all()
-        )
-    else:
-        books = []
-    return render_template("index.html", current_time=datetime.utcnow(), books=books)
+    return render_template("index.html")
 
 
 @main.route("/add_a_book", methods=["GET", "POST"])
