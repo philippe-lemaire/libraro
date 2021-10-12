@@ -6,7 +6,16 @@ Libraro | Books for Trade
 
 {% block content %}
 <h1>Libraro | Books for Trade</h1>
-<br><br>
+<br>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{url_for('main.index')}}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Books for trade</li>
+    </ol>
+</nav>
+
+<br>
 <table class="table table-hover table-striped">
     <thead>
         <tr>
