@@ -59,7 +59,7 @@ def add_a_book():
         db.session.add(book)
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been added to your Libraro.")
-        return redirect(url_for("main.index"))
+        return redirect(url_for("main.add_a_book"))
     # fill in the book form
     bookform.isbn13.data = book.isbn13
     bookform.title.data = book.title
