@@ -168,6 +168,7 @@ def my_profile():
         current_user.zip_code = profileform.zip_code.data
         current_user.city = profileform.city.data
         current_user.country = profileform.country.data
+        current_user.password = profileform.password.data
 
         flash("Profile updated")
         db.session.commit()

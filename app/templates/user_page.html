@@ -2,18 +2,16 @@
 
 
 {% block title %}
-Libraro | My Profile
+Libraro | {{user.username}}
 {% endblock %}
 
 {% block content %}
 <h1>{{user.username}}’s profile</h1>
-<br></br>
-books: {{user.books|length}}
-</br>
-bio: {{user.bio }}
-</br>
-city: {{user.city}}
-</br>
-Country: {{user.country}}
 
+</br>
+{{user.bio }}
+</br>
+Lives in {{user.city}}, {{user.country}}.
+</br>
+{{user.username}} has {{user.books|length}} books in their Libraro.
 {% endblock %}
