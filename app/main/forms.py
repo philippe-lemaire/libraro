@@ -7,6 +7,7 @@ from wtforms import (
     TextAreaField,
     BooleanField,
     SubmitField,
+    PasswordField,
     ValidationError,
 )
 from wtforms.fields.core import IntegerField
@@ -48,4 +49,11 @@ class ProfileForm(FlaskForm):
     zip_code = IntegerField(validators=[Optional()])
     city = StringField(validators=[Length(max=256), Optional()])
     country = StringField(validators=[Length(max=256), Optional()])
+    password = PasswordField(
+        "Update password",
+        validators=[
+            EqualTo("password2", message="Passwords must match."),
+        ],
+    )
+    password2 = PasswordField("Confirm new password")
     submit = SubmitField("Update profile")
