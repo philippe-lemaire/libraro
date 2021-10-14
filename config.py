@@ -37,6 +37,7 @@ class ProductionConfig(Config):
 
 class HerokuConfig(ProductionConfig):
     SSL_REDIRECT = True if os.environ.get("DYNO") else False
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URI")
 
     @classmethod
     def init_app(cls, app):
