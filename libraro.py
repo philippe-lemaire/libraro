@@ -1,9 +1,9 @@
-from collections import defaultdict
 import os
 import sys
 import click
 from app import create_app, db
 from app.models import Role, Book, User
+from flask_migrate import upgrade
 
 # from libraro.models import User, Role, Book
 from flask_migrate import Migrate
@@ -50,3 +50,13 @@ def test(coverage):
         COV.html_report(directory=covdir)
         print(f"HTML version: file://{covdir}/index.html")
         COV.erase()
+
+
+@app.cli.command
+def deploy():
+    """Run deployment tasks."""
+    # migrate database to latest revision
+    upgrade()
+
+    # create or update user roles
+    # Role.insert_roles()

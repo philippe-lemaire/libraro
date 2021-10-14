@@ -7,7 +7,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY")
-
+    SSL_REDIRECT = False
     LIBRARO_ADMIN = os.environ.get("LIBRARO_ADMIN")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SERVICE = "goob"
@@ -35,9 +35,30 @@ class ProductionConfig(Config):
     ) or "sqlite:///" + os.path.join(basedir, "app/data/data.sqlite")
 
 
+class HerokuConfig(ProductionConfig):
+    SSL_REDIRECT = True if os.environ.get("DYNO") else False
+
+    @classmethod
+    def init_app(cls, app):
+        ProductionConfig.init_app(app)
+        # log to stderr
+        import logging
+        from logging import StreamHandler
+
+        file_handler = StreamHandler()
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
+
+        # handle reverse proxy server headers
+        from werkzeug.contrib.fixers import ProxyFix
+
+        app.wsgi_app = ProxyFix(app.wsgi_app)
+
+
 config = {
     "development": DevelopmentConfig,
     "testing": TestingConfig,
     "production": ProductionConfig,
     "default": DevelopmentConfig,
+    "heroku": HerokuConfig,
 }

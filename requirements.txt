@@ -30,6 +30,8 @@ six
 visitor
 WTForms
 python-dotenv
+flask-sslify
+psycopg2-binary
 gunicorn
 
 # ISBN
