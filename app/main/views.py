@@ -6,7 +6,8 @@ from sqlalchemy import desc
 from . import main
 from app.models import Book, User
 from .forms import DeleteBookForm, IsbnForm, BookForm, BookUpdateForm, ProfileForm
-
+from werkzeug.utils import secure_filename
+from os import path
 from .. import db
 from .. import config
 
@@ -169,7 +170,12 @@ def my_profile():
         current_user.city = profileform.city.data
         current_user.country = profileform.country.data
         current_user.password = profileform.password.data
-
+        # save the picture and update the user.picture database field
+        filename = secure_filename(profileform.picture.data.filename)
+        file_ext = path.splitext(filename)[1]
+        img_path = f"app/static/img/uploads/{current_user.id}{file_ext}"
+        profileform.picture.data.save(img_path)
+        current_user.picture = f"{current_user.id}{file_ext}"
         flash("Profile updated")
         db.session.commit()
         return redirect(url_for("main.index"))

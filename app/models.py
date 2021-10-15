@@ -27,6 +27,7 @@ class User(UserMixin, db.Model):
     zip_code = db.Column(db.Integer)
     city = db.Column(db.String(128))
     country = db.Column(db.String(64))
+    picture = db.Column(db.String(128))
 
     @property
     def password(self):
