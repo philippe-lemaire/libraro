@@ -9,7 +9,14 @@ Libraro | Edit book
 <h1>Edit book</h1>
 
 
+{% if book.cover %}
+<img src="{{book.cover}}" />
+{% else %}
+<img src="/static/img/no_cover.png" />
+{% endif %}
 
+<br>
+<br>
 {{ render_form(bookform) }}
 <br>
 {{ render_form(deleteform, button_style='danger') }}

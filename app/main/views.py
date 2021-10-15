@@ -1,5 +1,5 @@
 from datetime import datetime
-from isbnlib import meta
+from isbnlib import meta, cover
 from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
 from sqlalchemy import desc
@@ -47,6 +47,7 @@ def add_a_book():
         book.user_review_stars = bookform.user_review_stars.data
         book.user_review_text = bookform.user_review_text.data
         book.to_trade = bookform.to_trade.data
+        book.cover = cover(book.isbn13).get("thumbnail")
         db.session.add(book)
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been added to your Libraro.")
@@ -87,6 +88,7 @@ def edit_book(id):
         )
         book.user_review_text = bookform.user_review_text.data
         book.to_trade = bookform.to_trade.data
+        book.cover = cover(book.isbn13).get("thumbnail")
         db.session.commit()
         flash(f"{book.title} by {book.authors} has been updated in your Libraro.")
         return redirect(url_for("main.my_books"))
