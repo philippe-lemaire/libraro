@@ -6,9 +6,11 @@ Libraro | {{user.username}}
 {% endblock %}
 
 {% block content %}
-<h1>{{user.username}}’s profile</h1>
 
+<h1>{{user.username}}’s profile</h1>
+{% if user.picture%}
 <img src='/static/img/uploads/{{user.picture}}' />
+{% endif %}
 </br>
 {{user.bio }}
 </br>
