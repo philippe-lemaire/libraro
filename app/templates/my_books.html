@@ -37,7 +37,7 @@ Libraro | My Books
             {% if book.cover %}
             <td><img src="{{book.cover}}" /></td>
             {% else %}
-            <td><img src="/static/img/no_cover.png" /></td>
+            <td></td>
             {% endif %}
             <td>{{ book.title}}</td>
             <td><a href="{{url_for('main.my_books_by_author', authors=book.authors)}}">{{book.authors}}</a></td>
