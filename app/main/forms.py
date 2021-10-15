@@ -9,6 +9,7 @@ from wtforms import (
     SubmitField,
     PasswordField,
     ValidationError,
+    FileField,
 )
 from wtforms.fields.core import IntegerField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo, Optional
@@ -44,6 +45,7 @@ class DeleteBookForm(FlaskForm):
 class ProfileForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Length(1, 128), Email()])
     username = StringField("Username", validators=[DataRequired()])
+    picture = FileField(label="Upload a profile picture")
     bio = TextAreaField(validators=[Length(max=256), Optional()])
     street_address = StringField(validators=[Length(max=128), Optional()])
     zip_code = IntegerField(validators=[Optional()])
