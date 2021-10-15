@@ -1,3 +1,4 @@
+from logging import NullHandler
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from . import login_manager
@@ -59,6 +60,7 @@ class Book(db.Model):
     to_trade = db.Column(db.Boolean())
     user_review_stars = db.Column(db.Integer, nullable=True)
     user_review_text = db.Column(db.String(256), nullable=True)
+    cover = db.Column(db.String(256), nullable=True)
 
 
 @login_manager.user_loader

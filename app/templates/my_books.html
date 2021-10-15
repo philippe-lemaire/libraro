@@ -20,6 +20,7 @@ Libraro | My Books
     <thead>
         <tr>
             <th scope="col">#</th>
+            <th scope="col">Cover</th>
             <th scope="col">Title</th>
             <th scope="col">Author(s)</th>
             <th scope='col'>Read</th>
@@ -33,6 +34,11 @@ Libraro | My Books
         {% for book in books %}
         <tr>
             <th scope="row">{{ loop.index }}</th>
+            {% if book.cover %}
+            <td><img src="{{book.cover}}" /></td>
+            {% else %}
+            <td><img src="/static/img/no_cover.png" /></td>
+            {% endif %}
             <td>{{ book.title}}</td>
             <td><a href="{{url_for('main.my_books_by_author', authors=book.authors)}}">{{book.authors}}</a></td>
             {% if book.read %}
