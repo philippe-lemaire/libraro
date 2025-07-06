@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}Mes Livres{% endblock title %}
+{% block content %}
+
+<h1>Liste des livres</h1>
+
+{% for book in book_list %}
+
+<p>{{book}}</p>
+
+{% endfor %}
+
+{% endblock content %}
