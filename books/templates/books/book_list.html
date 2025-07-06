@@ -6,10 +6,24 @@
 
 <h1>Liste des livres</h1>
 
-{% for book in book_list %}
+<table class="table">
+   <thead>
+    <tr>
+    <th>Titre</th>
+    <th>Auteurs</th>
+    <th>Éditeur</th>
+    <th>Année</th>
+    </tr>
+  </thead>
+  {% for book in book_list %}
+  <tr>
+    <td>{{book.title}}</td>
+    <td>{{book.authors}}</td>
+    <td>{{book.publisher}}</td>
+    <td>{{book.year}}</td>
+  </tr>
+  {% endfor %}
+</table>
 
-<p>{{book}}</p>
-
-{% endfor %}
 
 {% endblock content %}
