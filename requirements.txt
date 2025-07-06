@@ -14,6 +14,7 @@ file-validator==1.0.9
 filetype==1.1.0
 gunicorn==21.2.0
 humanize==4.4.0
+isbnlib==3.10.14
 packaging==23.2
 phonenumbers==8.13.19
 Pillow==10.0.0
