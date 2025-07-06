@@ -29,14 +29,17 @@ def add_a_book(request):
             isbn = form.cleaned_data["isbn"]
             if is_isbn10(isbn):
                 isbn = to_isbn13(isbn)
-
-            data = meta(isbn, service="wiki")
+            try:
+                data = meta(isbn, service="wiki")
+            except:
+                data = meta(isbn)
             # make isbn-13 or whatever just isbn
             if "ISBN-13" in data:
                 data["isbn"] = data["ISBN-13"]
                 del data["ISBN-13"]
             # make keys lowercase
             data = {k.lower(): v for k, v in data.items()}
+            print(data)
             try:
                 new_book = Book.objects.create(**data)
                 messages.success(request, f"Livre {new_book.title} a été ajouté.")
@@ -44,5 +47,5 @@ def add_a_book(request):
                 messages.warning(
                     request, f"Livre déjà présent dans la base de données."
                 )
-            return HttpResponseRedirect(reverse("books:index"))
+            return HttpResponseRedirect(reverse("books:add_a_book"))
     return render(request, template_name, context)
