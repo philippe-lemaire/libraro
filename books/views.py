@@ -3,9 +3,11 @@ from django.views import generic
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.db import IntegrityError
 from .models import Book
 from .forms import IsbnForm
 from isbnlib import *
+
 
 # Create your views here.
 
@@ -30,11 +32,17 @@ def add_a_book(request):
 
             data = meta(isbn, service="wiki")
             # make isbn-13 or whatever just isbn
-            data["isbn"] = data["ISBN-13"]
-            del data["ISBN-13"]
+            if "ISBN-13" in data:
+                data["isbn"] = data["ISBN-13"]
+                del data["ISBN-13"]
             # make keys lowercase
             data = {k.lower(): v for k, v in data.items()}
-            new_book = Book.objects.create(**data)
-            messages.success(request, f"Livre {new_book.title} a été ajouté.")
+            try:
+                new_book = Book.objects.create(**data)
+                messages.success(request, f"Livre {new_book.title} a été ajouté.")
+            except IntegrityError:
+                messages.warning(
+                    request, f"Livre déjà présent dans la base de données."
+                )
             return HttpResponseRedirect(reverse("books:index"))
     return render(request, template_name, context)
